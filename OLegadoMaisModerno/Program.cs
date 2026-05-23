@@ -1,6 +1,6 @@
-﻿using System;
+﻿using OLegadoMaisModerno.WinForms.Forms;
+using System;
 using System.Windows.Forms;
-using OLegadoMaisModerno.WinForms.Forms;
 
 namespace OLegadoMaisModerno.WinForms
 {

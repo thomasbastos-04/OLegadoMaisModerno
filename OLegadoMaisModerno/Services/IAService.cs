@@ -12,28 +12,21 @@ namespace OLegadoMaisModerno.WinForms.Services
         public IAService()
         {
             _client = new DeepSeekClient();
+            _historico = new List<ChatMessage>();
 
-            _historico = new List<ChatMessage>
-            {
-                new ChatMessage("system",
-                    "Você é o agente principal do projeto O Legado Mais Moderno. " +
-                    "Responda em português do Brasil, com clareza, estratégia e objetividade. " +
-                    "Ajude o usuário com ideias, textos, organização, tecnologia, estudos e produtividade.")
-            };
+            AdicionarPromptSistema();
         }
 
         public async Task<string> PerguntarAsync(string pergunta)
         {
             _historico.Add(new ChatMessage("user", pergunta));
 
-            var request = new DeepSeekRequest
-            {
-                model = "deepseek-chat",
-                messages = _historico,
-                stream = false
-            };
+            DeepSeekRequest request = new DeepSeekRequest();
+            request.model = "deepseek-chat";
+            request.messages = _historico;
+            request.stream = false;
 
-            var resposta = await _client.EnviarMensagemAsync(request);
+            string resposta = await _client.EnviarMensagemAsync(request);
 
             _historico.Add(new ChatMessage("assistant", resposta));
 
@@ -43,10 +36,23 @@ namespace OLegadoMaisModerno.WinForms.Services
         public void LimparHistorico()
         {
             _historico.Clear();
+            AdicionarPromptSistema();
+        }
 
-            _historico.Add(new ChatMessage("system",
-                "Você é o agente principal do projeto O Legado Mais Moderno. " +
-                "Responda em português do Brasil, com clareza, estratégia e objetividade."));
+        private void AdicionarPromptSistema()
+        {
+            _historico.Add(new ChatMessage(
+                "system",
+                "Você é O Legado, o agente principal do projeto O Legado Mais Moderno. " +
+                "Responda sempre em português do Brasil, com linguagem jovem formal, objetiva e natural. " +
+                "Você ajuda com código, textos, organização, estudos, produtividade e planejamento de projetos. " +
+                "Quando retornar código, sempre use blocos markdown com três crases e informe a linguagem, por exemplo ```csharp. " +
+                "Quando o usuário pedir código completo, entregue o código completo, organizado e pronto para colar. " +
+                "Explique o mínimo necessário antes do código. " +
+                "Evite respostas longas demais quando o usuário pedir algo direto. " +
+                "Quando houver passos técnicos, organize em etapas claras. " +
+                "Se o usuário estiver programando em C# antigo ou WinForms clássico, evite recursos modernos como target-typed new, records e ApplicationConfiguration."
+            ));
         }
     }
 }

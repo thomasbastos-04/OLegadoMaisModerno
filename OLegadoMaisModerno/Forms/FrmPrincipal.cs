@@ -1,311 +1,405 @@
-﻿using System.Drawing;
+﻿using OLegadoMaisModerno.WinForms.Services;
+using System;
+using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace OLegadoMaisModerno.WinForms.Forms
 {
-    partial class FrmPrincipal
+    public partial class FrmPrincipal : Form
     {
-        private System.ComponentModel.IContainer components = null;
+        private IAService _iaService;
 
-        private TableLayoutPanel layoutPrincipal;
-        private Panel pnlHeader;
-        private Panel pnlChat;
-        private Panel pnlInput;
-        private Panel pnlSidebar;
-
-        private Label lblTitulo;
-        private Label lblSubtitulo;
-        private Label lblStatus;
-        private Label lblChatTitulo;
-        private Label lblInputTitulo;
-        private Label lblSidebarTitulo;
-        private Label lblSidebarTexto;
-
-        private RichTextBox rtbChat;
-        private TextBox txtPergunta;
-        private Button btnEnviar;
-        private Button btnLimpar;
-
-        protected override void Dispose(bool disposing)
+        public FrmPrincipal()
         {
-            if (disposing && components != null)
-                components.Dispose();
-
-            base.Dispose(disposing);
+            InitializeComponent();
+            ConfigurarTelaInicial();
         }
 
-        private void InitializeComponent()
+        private void ConfigurarTelaInicial()
         {
-            layoutPrincipal = new TableLayoutPanel();
-            pnlHeader = new Panel();
-            lblTitulo = new Label();
-            lblSubtitulo = new Label();
-            lblStatus = new Label();
-            pnlChat = new Panel();
-            lblChatTitulo = new Label();
-            rtbChat = new RichTextBox();
-            pnlInput = new Panel();
-            lblInputTitulo = new Label();
-            txtPergunta = new TextBox();
-            btnEnviar = new Button();
-            btnLimpar = new Button();
-            pnlSidebar = new Panel();
-            lblSidebarTitulo = new Label();
-            lblSidebarTexto = new Label();
-
-            layoutPrincipal.SuspendLayout();
-            pnlHeader.SuspendLayout();
-            pnlChat.SuspendLayout();
-            pnlInput.SuspendLayout();
-            pnlSidebar.SuspendLayout();
-            SuspendLayout();
-
-            // 
-            // FrmPrincipal
-            // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(8, 12, 22);
-            ClientSize = new Size(1180, 760);
-            MinimumSize = new Size(980, 620);
-            Name = "FrmPrincipal";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "O Legado Mais Moderno";
-
-            // 
-            // layoutPrincipal
-            // 
-            layoutPrincipal.BackColor = Color.FromArgb(8, 12, 22);
-            layoutPrincipal.ColumnCount = 2;
-            layoutPrincipal.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 74F));
-            layoutPrincipal.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 26F));
-            layoutPrincipal.RowCount = 3;
-            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
-            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 185F));
-            layoutPrincipal.Dock = DockStyle.Fill;
-            layoutPrincipal.Padding = new Padding(22);
-            layoutPrincipal.Controls.Add(pnlHeader, 0, 0);
-            layoutPrincipal.Controls.Add(pnlSidebar, 1, 0);
-            layoutPrincipal.Controls.Add(pnlChat, 0, 1);
-            layoutPrincipal.Controls.Add(pnlInput, 0, 2);
-            layoutPrincipal.SetRowSpan(pnlSidebar, 3);
-
-            // 
-            // pnlHeader
-            // 
-            pnlHeader.BackColor = Color.FromArgb(16, 24, 43);
-            pnlHeader.Dock = DockStyle.Fill;
-            pnlHeader.Margin = new Padding(0, 0, 14, 14);
-            pnlHeader.Padding = new Padding(24);
-            pnlHeader.Controls.Add(lblTitulo);
-            pnlHeader.Controls.Add(lblSubtitulo);
-            pnlHeader.Controls.Add(lblStatus);
-
-            // 
-            // lblTitulo
-            // 
-            lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI Semibold", 23F, FontStyle.Bold);
-            lblTitulo.ForeColor = Color.White;
-            lblTitulo.Location = new Point(24, 18);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(382, 42);
-            lblTitulo.Text = "O Legado Mais Moderno";
-
-            // 
-            // lblSubtitulo
-            // 
-            lblSubtitulo.AutoSize = true;
-            lblSubtitulo.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            lblSubtitulo.ForeColor = Color.FromArgb(176, 190, 220);
-            lblSubtitulo.Location = new Point(28, 65);
-            lblSubtitulo.Name = "lblSubtitulo";
-            lblSubtitulo.Size = new Size(455, 19);
-            lblSubtitulo.Text = "Agente desktop com IA para criação, organização, estudo e produtividade.";
-
-            // 
-            // lblStatus
-            // 
-            lblStatus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblStatus.BackColor = Color.FromArgb(26, 131, 94);
-            lblStatus.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            lblStatus.ForeColor = Color.White;
-            lblStatus.Location = new Point(600, 35);
-            lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(165, 34);
             lblStatus.Text = "● Pronto";
-            lblStatus.TextAlign = ContentAlignment.MiddleCenter;
+            lblStatus.BackColor = Color.FromArgb(26, 131, 94);
 
-            // 
-            // pnlChat
-            // 
-            pnlChat.BackColor = Color.FromArgb(16, 24, 43);
-            pnlChat.Dock = DockStyle.Fill;
-            pnlChat.Margin = new Padding(0, 0, 14, 14);
-            pnlChat.Padding = new Padding(22);
-            pnlChat.Controls.Add(lblChatTitulo);
-            pnlChat.Controls.Add(rtbChat);
+            rtbChat.Clear();
 
-            // 
-            // lblChatTitulo
-            // 
-            lblChatTitulo.AutoSize = true;
-            lblChatTitulo.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            lblChatTitulo.ForeColor = Color.White;
-            lblChatTitulo.Location = new Point(22, 18);
-            lblChatTitulo.Name = "lblChatTitulo";
-            lblChatTitulo.Size = new Size(146, 21);
-            lblChatTitulo.Text = "Conversa com IA";
+            AdicionarMensagemSistema(
+                "Olá! Eu sou O Legado, o agente do projeto O Legado Mais Moderno.\n" +
+                "Digite uma mensagem abaixo para começarmos.\n\n" +
+                "Dica: use CTRL + ENTER para enviar."
+            );
 
-            // 
-            // rtbChat
-            // 
-            rtbChat.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            rtbChat.BackColor = Color.FromArgb(10, 15, 28);
-            rtbChat.BorderStyle = BorderStyle.None;
-            rtbChat.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular);
-            rtbChat.ForeColor = Color.FromArgb(232, 238, 250);
-            rtbChat.Location = new Point(22, 52);
-            rtbChat.Name = "rtbChat";
-            rtbChat.ReadOnly = true;
-            rtbChat.Size = new Size(758, 342);
-            rtbChat.TabIndex = 0;
-            rtbChat.Text = "";
+            txtPergunta.Focus();
+        }
 
-            // 
-            // pnlInput
-            // 
-            pnlInput.BackColor = Color.FromArgb(16, 24, 43);
-            pnlInput.Dock = DockStyle.Fill;
-            pnlInput.Margin = new Padding(0, 0, 14, 0);
-            pnlInput.Padding = new Padding(22);
-            pnlInput.Controls.Add(lblInputTitulo);
-            pnlInput.Controls.Add(txtPergunta);
-            pnlInput.Controls.Add(btnEnviar);
-            pnlInput.Controls.Add(btnLimpar);
+        private IAService ObterIAService()
+        {
+            if (_iaService == null)
+            {
+                _iaService = new IAService();
+            }
 
-            // 
-            // lblInputTitulo
-            // 
-            lblInputTitulo.AutoSize = true;
-            lblInputTitulo.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
-            lblInputTitulo.ForeColor = Color.White;
-            lblInputTitulo.Location = new Point(22, 18);
-            lblInputTitulo.Name = "lblInputTitulo";
-            lblInputTitulo.Size = new Size(119, 20);
-            lblInputTitulo.Text = "Sua mensagem";
+            return _iaService;
+        }
 
-            // 
-            // txtPergunta
-            // 
-            txtPergunta.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtPergunta.BackColor = Color.FromArgb(25, 36, 63);
-            txtPergunta.BorderStyle = BorderStyle.FixedSingle;
-            txtPergunta.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
-            txtPergunta.ForeColor = Color.White;
-            txtPergunta.Location = new Point(22, 50);
-            txtPergunta.Multiline = true;
-            txtPergunta.Name = "txtPergunta";
-            txtPergunta.ScrollBars = ScrollBars.Vertical;
-            txtPergunta.Size = new Size(560, 91);
-            txtPergunta.TabIndex = 1;
-            txtPergunta.KeyDown += txtPergunta_KeyDown;
+        private async void btnEnviar_Click(object sender, EventArgs e)
+        {
+            await EnviarMensagemAsync();
+        }
 
-            // 
-            // btnEnviar
-            // 
-            btnEnviar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnEnviar.BackColor = Color.FromArgb(91, 86, 255);
-            btnEnviar.Cursor = Cursors.Hand;
-            btnEnviar.FlatAppearance.BorderSize = 0;
-            btnEnviar.FlatStyle = FlatStyle.Flat;
-            btnEnviar.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            btnEnviar.ForeColor = Color.White;
-            btnEnviar.Location = new Point(602, 50);
-            btnEnviar.Name = "btnEnviar";
-            btnEnviar.Size = new Size(178, 42);
-            btnEnviar.TabIndex = 2;
-            btnEnviar.Text = "Enviar";
-            btnEnviar.UseVisualStyleBackColor = false;
-            btnEnviar.Click += btnEnviar_Click;
+        private void btnLimpar_Click(object sender, EventArgs e)
+        {
+            LimparConversa();
+        }
 
-            // 
-            // btnLimpar
-            // 
-            btnLimpar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnLimpar.BackColor = Color.FromArgb(37, 50, 82);
-            btnLimpar.Cursor = Cursors.Hand;
-            btnLimpar.FlatAppearance.BorderSize = 0;
-            btnLimpar.FlatStyle = FlatStyle.Flat;
-            btnLimpar.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            btnLimpar.ForeColor = Color.White;
-            btnLimpar.Location = new Point(602, 99);
-            btnLimpar.Name = "btnLimpar";
-            btnLimpar.Size = new Size(178, 42);
-            btnLimpar.TabIndex = 3;
-            btnLimpar.Text = "Limpar conversa";
-            btnLimpar.UseVisualStyleBackColor = false;
-            btnLimpar.Click += btnLimpar_Click;
+        private async void txtPergunta_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                await EnviarMensagemAsync();
+            }
+        }
 
-            // 
-            // pnlSidebar
-            // 
-            pnlSidebar.BackColor = Color.FromArgb(13, 20, 36);
-            pnlSidebar.Dock = DockStyle.Fill;
-            pnlSidebar.Margin = new Padding(0);
-            pnlSidebar.Padding = new Padding(22);
-            pnlSidebar.Controls.Add(lblSidebarTitulo);
-            pnlSidebar.Controls.Add(lblSidebarTexto);
+        private async Task EnviarMensagemAsync()
+        {
+            string pergunta = txtPergunta.Text.Trim();
 
-            // 
-            // lblSidebarTitulo
-            // 
-            lblSidebarTitulo.AutoSize = true;
-            lblSidebarTitulo.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
-            lblSidebarTitulo.ForeColor = Color.White;
-            lblSidebarTitulo.Location = new Point(22, 24);
-            lblSidebarTitulo.Name = "lblSidebarTitulo";
-            lblSidebarTitulo.Size = new Size(151, 25);
-            lblSidebarTitulo.Text = "Agente Principal";
+            if (string.IsNullOrWhiteSpace(pergunta))
+            {
+                MessageBox.Show(
+                    "Digite uma mensagem antes de enviar.",
+                    "Atenção",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
 
-            // 
-            // lblSidebarTexto
-            // 
-            lblSidebarTexto.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            lblSidebarTexto.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            lblSidebarTexto.ForeColor = Color.FromArgb(180, 193, 220);
-            lblSidebarTexto.Location = new Point(24, 68);
-            lblSidebarTexto.Name = "lblSidebarTexto";
-            lblSidebarTexto.Size = new Size(235, 330);
-            lblSidebarTexto.Text =
-                "Use este agente para:\r\n\r\n" +
-                "• Criar textos\r\n" +
-                "• Organizar ideias\r\n" +
-                "• Estudar assuntos\r\n" +
-                "• Gerar planejamentos\r\n" +
-                "• Revisar conteúdos\r\n" +
-                "• Apoiar projetos\r\n\r\n" +
-                "Atalho:\r\n" +
-                "CTRL + ENTER para enviar.";
+                txtPergunta.Focus();
+                return;
+            }
 
-            // 
-            // Controls
-            // 
-            Controls.Add(layoutPrincipal);
+            try
+            {
+                AlterarEstadoCarregando(true);
 
-            pnlSidebar.ResumeLayout(false);
-            pnlSidebar.PerformLayout();
-            pnlInput.ResumeLayout(false);
-            pnlInput.PerformLayout();
-            pnlChat.ResumeLayout(false);
-            pnlChat.PerformLayout();
-            pnlHeader.ResumeLayout(false);
-            pnlHeader.PerformLayout();
-            layoutPrincipal.ResumeLayout(false);
-            ResumeLayout(false);
+                AdicionarMensagemUsuario(pergunta);
+
+                txtPergunta.Clear();
+                txtPergunta.Focus();
+
+                IAService service = ObterIAService();
+
+                string resposta = await service.PerguntarAsync(pergunta);
+
+                AdicionarMensagemIA(resposta);
+            }
+            catch (Exception ex)
+            {
+                string mensagemErro = TratarMensagemErro(ex);
+
+                AdicionarMensagemSistema("Erro ao consultar a IA:\n" + mensagemErro);
+
+                MessageBox.Show(
+                    mensagemErro,
+                    "Erro ao consultar a IA",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+            finally
+            {
+                AlterarEstadoCarregando(false);
+            }
+        }
+
+        private void LimparConversa()
+        {
+            DialogResult resultado = MessageBox.Show(
+                "Deseja limpar a conversa atual?",
+                "Limpar conversa",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (resultado != DialogResult.Yes)
+            {
+                return;
+            }
+
+            if (_iaService != null)
+            {
+                _iaService.LimparHistorico();
+            }
+
+            rtbChat.Clear();
+
+            AdicionarMensagemSistema("Conversa limpa. Pode mandar uma nova mensagem.");
+
+            txtPergunta.Clear();
+            txtPergunta.Focus();
+        }
+
+        private void AlterarEstadoCarregando(bool carregando)
+        {
+            btnEnviar.Enabled = !carregando;
+            btnLimpar.Enabled = !carregando;
+            txtPergunta.Enabled = !carregando;
+
+            btnEnviar.Text = carregando ? "Pensando..." : "Enviar";
+
+            lblStatus.Text = carregando ? "● Processando" : "● Pronto";
+            lblStatus.BackColor = carregando
+                ? Color.FromArgb(178, 119, 32)
+                : Color.FromArgb(26, 131, 94);
+
+            Cursor = carregando ? Cursors.WaitCursor : Cursors.Default;
+        }
+
+        private string TratarMensagemErro(Exception ex)
+        {
+            string mensagem = ex.Message;
+
+            if (mensagem.IndexOf("DEEPSEEK_API_KEY", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return
+                    "Token da DeepSeek não encontrado.\n\n" +
+                    "Configure a variável de ambiente DEEPSEEK_API_KEY no Windows ou adicione sua chave temporariamente no DeepSeekClient.";
+            }
+
+            if (mensagem.IndexOf("401", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                mensagem.IndexOf("Unauthorized", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return
+                    "Token inválido ou não autorizado.\n\n" +
+                    "Verifique se sua chave da DeepSeek está correta.";
+            }
+
+            if (mensagem.IndexOf("429", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return
+                    "A API retornou limite de uso ou muitas requisições.\n\n" +
+                    "Tente novamente em alguns instantes.";
+            }
+
+            return mensagem;
+        }
+
+        private void AdicionarMensagemUsuario(string mensagem)
+        {
+            AdicionarCabecalhoMensagem("VOCÊ", Color.FromArgb(130, 170, 255));
+            AdicionarTextoNormal(mensagem);
+            AdicionarSeparador();
+        }
+
+        private void AdicionarMensagemIA(string mensagem)
+        {
+            AdicionarCabecalhoMensagem("O LEGADO", Color.FromArgb(130, 230, 190));
+            RenderizarRespostaIA(mensagem);
+            AdicionarSeparador();
+        }
+
+        private void AdicionarMensagemSistema(string mensagem)
+        {
+            AdicionarCabecalhoMensagem("SISTEMA", Color.FromArgb(230, 200, 120));
+            AdicionarTextoNormal(mensagem);
+            AdicionarSeparador();
+        }
+
+        private void AdicionarCabecalhoMensagem(string autor, Color cor)
+        {
+            rtbChat.SelectionStart = rtbChat.TextLength;
+            rtbChat.SelectionLength = 0;
+
+            rtbChat.SelectionFont = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
+            rtbChat.SelectionColor = cor;
+            rtbChat.SelectionBackColor = rtbChat.BackColor;
+
+            rtbChat.AppendText(autor + ":" + Environment.NewLine + Environment.NewLine);
+        }
+
+        private void AdicionarTextoNormal(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                return;
+            }
+
+            rtbChat.SelectionStart = rtbChat.TextLength;
+            rtbChat.SelectionLength = 0;
+
+            rtbChat.SelectionFont = new Font("Segoe UI", 10.5F, FontStyle.Regular);
+            rtbChat.SelectionColor = Color.FromArgb(232, 238, 250);
+            rtbChat.SelectionBackColor = rtbChat.BackColor;
+
+            rtbChat.AppendText(texto);
+            rtbChat.AppendText(Environment.NewLine + Environment.NewLine);
+
+            RolarChatParaBaixo();
+        }
+
+        private void AdicionarTextoNormalSemEspacoExtra(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                return;
+            }
+
+            rtbChat.SelectionStart = rtbChat.TextLength;
+            rtbChat.SelectionLength = 0;
+
+            rtbChat.SelectionFont = new Font("Segoe UI", 10.5F, FontStyle.Regular);
+            rtbChat.SelectionColor = Color.FromArgb(232, 238, 250);
+            rtbChat.SelectionBackColor = rtbChat.BackColor;
+
+            rtbChat.AppendText(texto);
+            rtbChat.AppendText(Environment.NewLine + Environment.NewLine);
+
+            RolarChatParaBaixo();
+        }
+
+        private void RenderizarRespostaIA(string mensagem)
+        {
+            if (string.IsNullOrWhiteSpace(mensagem))
+            {
+                AdicionarTextoNormal("A IA não retornou conteúdo.");
+                return;
+            }
+
+            string[] linhas = mensagem.Replace("\r\n", "\n").Split('\n');
+
+            bool dentroCodigo = false;
+            string linguagemCodigo = "";
+            string blocoCodigo = "";
+            string textoNormal = "";
+
+            for (int i = 0; i < linhas.Length; i++)
+            {
+                string linha = linhas[i];
+
+                if (linha.TrimStart().StartsWith("```"))
+                {
+                    if (!dentroCodigo)
+                    {
+                        if (!string.IsNullOrWhiteSpace(textoNormal))
+                        {
+                            AdicionarTextoNormalSemEspacoExtra(textoNormal.TrimEnd());
+                            textoNormal = "";
+                        }
+
+                        dentroCodigo = true;
+
+                        linguagemCodigo = linha.Trim().Replace("```", "").Trim();
+
+                        if (string.IsNullOrWhiteSpace(linguagemCodigo))
+                        {
+                            linguagemCodigo = "código";
+                        }
+
+                        blocoCodigo = "";
+                    }
+                    else
+                    {
+                        dentroCodigo = false;
+
+                        AdicionarBlocoCodigo(linguagemCodigo, blocoCodigo.TrimEnd());
+
+                        linguagemCodigo = "";
+                        blocoCodigo = "";
+                    }
+                }
+                else
+                {
+                    if (dentroCodigo)
+                    {
+                        blocoCodigo += linha + Environment.NewLine;
+                    }
+                    else
+                    {
+                        textoNormal += linha + Environment.NewLine;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(textoNormal))
+            {
+                AdicionarTextoNormalSemEspacoExtra(textoNormal.TrimEnd());
+            }
+
+            if (!string.IsNullOrWhiteSpace(blocoCodigo))
+            {
+                string linguagemFinal = string.IsNullOrWhiteSpace(linguagemCodigo)
+                    ? "código"
+                    : linguagemCodigo;
+
+                AdicionarBlocoCodigo(linguagemFinal, blocoCodigo.TrimEnd());
+            }
+
+            rtbChat.AppendText(Environment.NewLine);
+            RolarChatParaBaixo();
+        }
+
+        private void AdicionarBlocoCodigo(string linguagem, string codigo)
+        {
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                return;
+            }
+
+            rtbChat.SelectionStart = rtbChat.TextLength;
+            rtbChat.SelectionLength = 0;
+
+            rtbChat.SelectionFont = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            rtbChat.SelectionColor = Color.FromArgb(160, 190, 255);
+            rtbChat.SelectionBackColor = Color.FromArgb(18, 28, 50);
+
+            rtbChat.AppendText("  " + linguagem.ToUpper() + "  ");
+            rtbChat.AppendText(Environment.NewLine);
+
+            string[] linhasCodigo = codigo.Replace("\r\n", "\n").Split('\n');
+
+            for (int i = 0; i < linhasCodigo.Length; i++)
+            {
+                string numeroLinha = (i + 1).ToString().PadLeft(3, ' ');
+
+                rtbChat.SelectionFont = new Font("Consolas", 10F, FontStyle.Regular);
+
+                rtbChat.SelectionColor = Color.FromArgb(105, 125, 160);
+                rtbChat.SelectionBackColor = Color.FromArgb(12, 18, 32);
+                rtbChat.AppendText(numeroLinha + "  ");
+
+                rtbChat.SelectionColor = Color.FromArgb(225, 235, 245);
+                rtbChat.SelectionBackColor = Color.FromArgb(12, 18, 32);
+                rtbChat.AppendText(linhasCodigo[i]);
+
+                rtbChat.AppendText(Environment.NewLine);
+            }
+
+            rtbChat.SelectionBackColor = rtbChat.BackColor;
+            rtbChat.SelectionColor = Color.FromArgb(232, 238, 250);
+            rtbChat.AppendText(Environment.NewLine);
+
+            RolarChatParaBaixo();
+        }
+
+        private void AdicionarSeparador()
+        {
+            rtbChat.SelectionStart = rtbChat.TextLength;
+            rtbChat.SelectionLength = 0;
+
+            rtbChat.SelectionFont = new Font("Segoe UI", 9F, FontStyle.Regular);
+            rtbChat.SelectionColor = Color.FromArgb(70, 82, 110);
+            rtbChat.SelectionBackColor = rtbChat.BackColor;
+
+            rtbChat.AppendText("────────────────────────────────────────────");
+            rtbChat.AppendText(Environment.NewLine + Environment.NewLine);
+
+            RolarChatParaBaixo();
+        }
+
+        private void RolarChatParaBaixo()
+        {
+            rtbChat.SelectionStart = rtbChat.TextLength;
+            rtbChat.ScrollToCaret();
         }
     }
 }
