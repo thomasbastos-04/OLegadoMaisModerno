@@ -4,8 +4,15 @@ namespace OLegadoMaisModerno.WinForms.Models
 {
     public class DeepSeekRequest
     {
-        public string model { get; set; } = "deepseek-chat";
-        public List<ChatMessage> messages { get; set; } = new();
-        public bool stream { get; set; } = false;
+        public string model { get; set; }
+        public List<ChatMessage> messages { get; set; }
+        public bool stream { get; set; }
+
+        public DeepSeekRequest()
+        {
+            model = "deepseek-chat";
+            messages = new List<ChatMessage>();
+            stream = false;
+        }
     }
 }

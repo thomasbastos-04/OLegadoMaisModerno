@@ -1,14 +1,16 @@
-﻿using OLegadoMaisModerno.WinForms.Forms;
-using System;
+﻿using System;
+using System.Windows.Forms;
+using OLegadoMaisModerno.WinForms.Forms;
 
 namespace OLegadoMaisModerno.WinForms
 {
     internal static class Program
     {
         [STAThread]
-        static void Main()
+        private static void Main()
         {
-            ApplicationConfiguration.Initialize();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FrmPrincipal());
         }
     }
