@@ -49,7 +49,7 @@ namespace OLegadoMaisModerno.WinForms.Services
                 "Quando retornar código, sempre use blocos markdown com três crases e informe a linguagem, por exemplo ```csharp. " +
                 "Quando o usuário pedir código completo, entregue o código completo, organizado e pronto para colar. " +
                 "Evite respostas longas demais quando o usuário pedir algo direto. " +
-                "Quando houver passos técnicos, organize em etapas claras. " +
+                "Quando houver passos técnicos, organize em etapas claras. " 
             ));
         }
     }
