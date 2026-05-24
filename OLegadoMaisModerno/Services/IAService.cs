@@ -50,7 +50,6 @@ namespace OLegadoMaisModerno.WinForms.Services
                 "Quando o usuário pedir código completo, entregue o código completo, organizado e pronto para colar. " +
                 "Evite respostas longas demais quando o usuário pedir algo direto. " +
                 "Quando houver passos técnicos, organize em etapas claras. " +
-                "Se o usuário estiver programando em C# antigo ou WinForms clássico, evite recursos modernos como target-typed new, records e ApplicationConfiguration."
             ));
         }
     }
